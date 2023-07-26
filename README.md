@@ -4,9 +4,9 @@ Pekko
 
 Note
 ----
->The transition from Akka to Pekko is not without challenges. I incurred unresovable
->issues with GraphDSL and minor issues with implicit-to-given conversions. Pekko-Http
->is ***not*** yet ready.
+>The transition from Akka to Pekko is a relatively smooth process, principally
+>requiring only package name changes and implicit-to-given conversions. The
+>GraphDSL proved most challenging. Pekko-Http has ***not*** yet been pubished.
 
 Test
 ----
