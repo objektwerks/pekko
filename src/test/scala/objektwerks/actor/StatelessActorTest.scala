@@ -1,8 +1,8 @@
-package typed
+package objektwerks.actor
 
-import akka.actor.typed.{Behavior, PostStop}
-import akka.actor.typed.scaladsl.Behaviors
-import akka.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+import org.apache.pekko.actor.typed.{Behavior, PostStop}
+import org.apache.pekko.actor.typed.scaladsl.Behaviors
+import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
 
 import org.scalatest.wordspec.AnyWordSpecLike
 
