@@ -20,7 +20,7 @@ Multiple main classes detected. Select one to run:
  [7] objektwerks.typed.NowApp
  [8] objektwerks.typed.PingFpApp
  [9] objektwerks.typed.PingOoApp
- [10] objektwerks.typed.run
+ [10] objektwerks.typed.runGreeterApp
 
 Enter number:
 ```
