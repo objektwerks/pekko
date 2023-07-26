@@ -8,19 +8,19 @@ import org.apache.pekko.event.slf4j.Logger
 import org.apache.pekko.persistence.typed.PersistenceId
 import org.apache.pekko.persistence.typed.scaladsl.{Effect, EventSourcedBehavior}
 
-sealed trait Command extends Product with Serializable
+sealed trait Command
 final case class Add(data: String) extends Command
 final case class Get(replyTo: ActorRef[Command]) extends Command
 final case class Print(state: State) extends Command
 case object Clear extends Command
 
-sealed trait Event extends Product with Serializable
+sealed trait Event
 final case class Added(data: String) extends Event
 case object Cleared extends Event
 
 final case class State(history: List[String] = Nil)
 
-object EventSourceActor {
+object EventSourceActor:
   val log = Logger(getClass.getSimpleName)
   val id = EventSourceActor.getClass.getSimpleName
 
@@ -57,9 +57,8 @@ object EventSourceActor {
       commandHandler = commandHandler,
       eventHandler = eventHandler
     )
-}
 
-object EventSourceApp {
+object EventSourceApp:
   def apply(): Behavior[Command] = Behaviors.setup[Command] { context =>
     val eventSourceActor = context.spawn(EventSourceActor(EventSourceActor.id), "event-source-actor")
     context.log.info("*** EventSourceActor started!")
@@ -86,7 +85,7 @@ object EventSourceApp {
     }
   }
 
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit =
     val system = ActorSystem[Command](EventSourceApp(), "event-source-app")
     system.log.info("*** EventSourceApp running ...")
     system ! Add("Hello, ")
@@ -96,5 +95,3 @@ object EventSourceApp {
     Thread.sleep(1000L)
     system.log.info("*** EventSourceApp terminating ...")
     system.terminate()
-  }
-}
