@@ -4,6 +4,9 @@ scalaVersion := "3.3.1-RC4"
 libraryDependencies ++= {
   val pekkoVersion = "1.0.0"
   Seq(
+    "org.apache.pekko" %% "pekko-actor" % pekkoVersion,
+    "org.apache.pekko" %% "pekko-persistence" % pekkoVersion,
+    "org.apache.pekko" %% "pekko-stream" % pekkoVersion,
     "org.apache.pekko" %% "pekko-actor-typed" % pekkoVersion,
     "org.apache.pekko" %% "pekko-persistence-typed" % pekkoVersion,
     "org.apache.pekko" %% "pekko-stream-typed" % pekkoVersion,
