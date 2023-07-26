@@ -22,7 +22,6 @@ object TextActor:
       context.log.info("*** TextActor stopped!")
       Behaviors.same
   }
-}
 
 class TextActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
   "TextActor behavior" should {
@@ -32,3 +31,4 @@ class TextActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
       textActor ! Text("abc123", testProbe.ref)
       testProbe.expectMessage(Echo("abc123"))
     }
+  }
