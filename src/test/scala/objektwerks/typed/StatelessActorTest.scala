@@ -3,13 +3,14 @@ package objektwerks.typed
 import org.apache.pekko.actor.typed.{Behavior, PostStop}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+
 import org.scalatest.wordspec.AnyWordSpecLike
 
-sealed trait Count extends Product with Serializable
+sealed trait Count
 case object Increment extends Count
 case object Decrement extends Count
 
-object CountActor {
+object CountActor:
   def behavior(count: Int = 0): Behavior[Count] = Behaviors.receive[Count] {
     (context, message) => message match {
       case Increment =>
@@ -24,9 +25,8 @@ object CountActor {
       context.log.info("*** CountActor stopped!")
       Behaviors.same
   }
-}
 
-class StatelessActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike {
+class StatelessActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
   "CountActor behavior" should {
     "increment / decrement" in {
       val testProbe = createTestProbe[Count]("test-count")
@@ -37,4 +37,3 @@ class StatelessActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike 
       testProbe.expectNoMessage()
     }
   }
-}
