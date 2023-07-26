@@ -1,11 +1,11 @@
-package akka
+package objektwerks.actor
 
 import java.time.LocalTime
 
-import akka.actor._
-import akka.pattern._
-import akka.routing.{ActorRefRoutee, RoundRobinRoutingLogic, Router}
-import akka.util.Timeout
+import org.apache.pekko.actor._
+import org.apache.pekko.pattern._
+import org.apache.pekko.routing.{ActorRefRoutee, RoundRobinRoutingLogic, Router}
+import org.apache.pekko.util.Timeout
 
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
@@ -14,7 +14,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
-class Clock extends Actor with ActorLogging {
+class Clock extends Actor with ActorLogging:
   val router = {
     val routees = Vector.fill(2) {
       ActorRefRoutee( context.actorOf(Props[Time]()) )
@@ -22,29 +22,24 @@ class Clock extends Actor with ActorLogging {
     Router(RoundRobinRoutingLogic(), routees)
   }
 
-  def receive: Receive = {
+  def receive: Receive =
     case timeIs: String => router.route(timeIs, sender())
-  }
-}
 
-class Time extends Actor with ActorLogging {
-  def receive: Receive = {
+class Time extends Actor with ActorLogging:
+  def receive: Receive =
     case timeIs: String =>
       val time = s"$timeIs ${LocalTime.now.toString}"
       log.info(s"*** $time")
       sender().tell(time, context.parent)
-  }
-}
 
-class RouterTest extends AnyFunSuite with BeforeAndAfterAll {
-  implicit val timeout = Timeout(1 second)
+class RouterTest extends AnyFunSuite with BeforeAndAfterAll:
+  given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("router", Conf.config)
   val clock = system.actorOf(Props[Clock](), name = "clock")
 
-  override protected def afterAll(): Unit = {
+  override protected def afterAll(): Unit =
     Await.result(system.terminate(), 1 second)
     ()
-  }
 
   test("router") {
     val whatTimeIsIt = (i: Int) => {
@@ -54,4 +49,3 @@ class RouterTest extends AnyFunSuite with BeforeAndAfterAll {
     }
     for(i <- 1 to 3) whatTimeIsIt(i)
   }
-}
