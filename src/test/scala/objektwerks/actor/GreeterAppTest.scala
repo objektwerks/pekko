@@ -1,9 +1,9 @@
-package objektwerks
+package objektwerks.actor
 
 import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
 import org.scalatest.funsuite.AnyFunSuiteLike
 
-import objektwerks.Greeter.{Greet, Greeted}
+import objektwerks.actor.Greeter.{Greet, Greeted}
 
 class GreeterAppTest extends ScalaTestWithActorTestKit with AnyFunSuiteLike:
   test("greeter") {
