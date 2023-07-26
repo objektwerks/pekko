@@ -5,12 +5,12 @@ import java.time.Instant
 import org.apache.pekko.actor.typed.{ActorSystem, Behavior, PostStop, Signal}
 import org.apache.pekko.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
 
-object PingOoApp {
+object PingOoApp:
   final case class Ping(message: String) extends Product with Serializable
 
-  def apply(): Behavior[Ping] = Behaviors.setup[Ping] { context => new PingActor(context) }
+  def apply(): Behavior[Ping] = Behaviors.setup[Ping] { context => PingActor(context) }
 
-  class PingActor(context: ActorContext[Ping]) extends AbstractBehavior[Ping](context) {
+  class PingActor(context: ActorContext[Ping]) extends AbstractBehavior[Ping](context):
     override def onMessage(ping: Ping): Behavior[Ping] = {
       ping match {
         case Ping(message) =>
@@ -19,18 +19,14 @@ object PingOoApp {
       }
     }
 
-    override def onSignal: PartialFunction[Signal, Behavior[Ping]] = {
+    override def onSignal: PartialFunction[Signal, Behavior[Ping]] =
       case PostStop =>
         context.log.info("*** PingActor stopped!")
         this
-    }
-  }
 
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit =
     val system = ActorSystem[Ping](PingOoApp(), "ping-oo-app")
     system.log.info("*** PingOoApp running!")
     system ! Ping("ping")
     system.log.info("*** PingOoApp terminating ...")
     system.terminate()
-  }
-}
