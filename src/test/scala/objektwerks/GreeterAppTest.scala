@@ -7,7 +7,7 @@ import objektwerks.Greeter.Greet
 import objektwerks.Greeter.Greeted
 
 class GreeterAppTest extends ScalaTestWithActorTestKit with AnyFunSuiteLike:
-  test("greeting") {
+  test("greeter") {
     val replyProbe = createTestProbe[Greeted]()
     val underTest = spawn(Greeter())
     underTest ! Greet("Santa", replyProbe.ref)
