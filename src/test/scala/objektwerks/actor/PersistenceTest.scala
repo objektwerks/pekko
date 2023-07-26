@@ -59,7 +59,7 @@ class ComputeActor extends PersistentActor with ActorLogging:
 class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(20 seconds)
   val system = ActorSystem.create("persistence", Conf.config)
-  val computer = system.actorOf(Props[ComputeActor](), name = "computer-actor")
+  val computeActor = system.actorOf(Props[ComputeActor](), name = "computer-actor")
   given dispatcher: ExecutionContext = system.dispatcher
 
   def fibonacci(n: Int): Int =
@@ -75,16 +75,16 @@ class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
     ()
 
   test("persistence") {
-    for (n <- 1 to 3) computer ! Compute(fibonacci, n)
+    for (n <- 1 to 10) computeActor ! Compute(fibonacci, n)
     Thread.sleep(3000)
 
-    computer ! Snapshot
+    computeActor ! Snapshot
     Thread.sleep(3000)
 
-    val events = Await.result( (computer ? Result).mapTo[List[Computed]], Duration.Inf)
+    val events = Await.result( (computeActor ? Result).mapTo[List[Computed]], 15 seconds)
     println("fibonacci computed events:")
     events.foreach(event => println(s"id: ${event.id} created: ${event.created} value: ${event.value}"))
-    assert(events.size >= 3)
+    assert(events.size >= 10)
 
-    computer ! Shutdown
+    computeActor ! Shutdown
   }
