@@ -1,12 +1,12 @@
-package akka
+package objektwerks.actor
 
-import akka.actor._
-import akka.util.Timeout
+import org.apache.pekko.actor.*
+import org.apache.pekko.util.Timeout
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 
 import scala.concurrent.Await
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.language.postfixOps
 
 sealed trait State
@@ -17,7 +17,7 @@ case class Data(flowRate: Int)
 
 case class Event(state: State, data: Data)
 
-class Pump extends Actor with FSM[State, Data] {
+class Pump extends Actor with FSM[State, Data]:
   startWith(Off, Data(0))
   when(Off) {
     case Event(On, Data(flowRate)) => goto(On) using Data(flowRate)
@@ -26,20 +26,17 @@ class Pump extends Actor with FSM[State, Data] {
     case Event(Off, Data(flowRate)) => goto(Off) using Data(flowRate)
   }
   initialize()
-}
 
-class FSMTest extends AnyFunSuite with BeforeAndAfterAll {
-  implicit val timeout = Timeout(1 second)
+class FSMTest extends AnyFunSuite with BeforeAndAfterAll:
+  given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("fsm", Conf.config)
   val pump = system.actorOf(Props[Pump](), name = "pump")
 
-  override protected def afterAll(): Unit = {
+  override protected def afterAll(): Unit =
     Await.result(system.terminate(), 1 second)
     ()
-  }
 
   test("fsm") {
     pump ! Event(On, Data(1))
     pump ! Event(Off, Data(0))
   }
-}
