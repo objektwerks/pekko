@@ -42,6 +42,6 @@ object GreeterMain:
       }
     }
 
-@main def run: Unit =
+@main def runGreeterApp: Unit =
   val greeterMain: ActorSystem[GreeterMain.SayHello] = ActorSystem(GreeterMain(), "PekkoQuickstart")
   greeterMain ! SayHello("Charles")
