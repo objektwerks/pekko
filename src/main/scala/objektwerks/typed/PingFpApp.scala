@@ -5,7 +5,7 @@ import java.time.Instant
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.typed.{ActorSystem, Behavior, PostStop}
 
-object PingFpApp {
+object PingFpApp:
   final case class Ping(message: String) extends Product with Serializable
 
   def apply(): Behavior[Ping] = Behaviors.receive[Ping] {
@@ -20,11 +20,9 @@ object PingFpApp {
       Behaviors.same
   }
 
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[String]): Unit =
     val system = ActorSystem[Ping](PingFpApp(), "ping-fp-app")
     system.log.info("*** PingFpApp running!")
     system ! Ping("ping")
     system.log.info("*** PingFpApp terminating ...")
     system.terminate()
-  }
-}
