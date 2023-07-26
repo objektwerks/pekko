@@ -13,7 +13,7 @@ import org.scalatest.funsuite.AnyFunSuite
 
 import scala.annotation.tailrec
 import scala.concurrent.Await
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.language.postfixOps
 import scala.concurrent.ExecutionContext
 
@@ -57,7 +57,7 @@ class Computer extends PersistentActor with ActorLogging:
     case RecoveryCompleted => log.info("*** Computer snapshot recovery completed.")
 
 class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(3 seconds)
+  given timeout: Timeout = Timeout(11 seconds)
   val system = ActorSystem.create("persistence", Conf.config)
   val computer = system.actorOf(Props[Computer](), name = "computer")
   given dispatcher: ExecutionContext = system.dispatcher
@@ -76,10 +76,10 @@ class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
 
   test("persistence") {
     for (n <- 1 to 10) computer ! Compute(fibonacci, n)
-    Thread.sleep(3000)
+    Thread.sleep(2000)
 
     computer ! Snapshot
-    Thread.sleep(3000)
+    Thread.sleep(2000)
 
     val events = Await.result( (computer ? Result).mapTo[List[Computed]], 10 seconds)
     println("fibonacci computed events:")
