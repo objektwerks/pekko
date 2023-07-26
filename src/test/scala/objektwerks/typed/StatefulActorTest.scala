@@ -3,13 +3,14 @@ package objektwerks.typed
 import org.apache.pekko.actor.typed.{Behavior, PostStop}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+
 import org.scalatest.wordspec.AnyWordSpecLike
 
-sealed trait Emotion extends Product with Serializable
+sealed trait Emotion
 case object Happy extends Emotion
 case object Sad extends Emotion
 
-object EmotionActor {
+object EmotionActor:
   def apply(): Behavior[Emotion] = Behaviors.setup[Emotion] { context =>
     var level = 0
     Behaviors.receiveMessage[Emotion] {
@@ -27,9 +28,8 @@ object EmotionActor {
         Behaviors.same
     }
   }
-}
 
-class StatefulActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike {
+class StatefulActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
   "EmotionActor behavior" should {
     "happy / sad" in {
       val testProbe = createTestProbe[Emotion]("test-emotion")
@@ -40,4 +40,3 @@ class StatefulActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike {
       testProbe.expectNoMessage()
     }
   }
-}
