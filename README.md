@@ -14,7 +14,7 @@ Multiple main classes detected. Select one to run:
  [1] objektwerks.runChartApp
  [2] objektwerks.runFileApp
  [3] objektwerks.runFutureApp
- [4] objektwerks.stream.ActorApp
+ [4] objektwerks.stream.runActorApp
  [5] objektwerks.typed.EventSourceApp
  [6] objektwerks.typed.PingFpApp
  [7] objektwerks.typed.PingOoApp
