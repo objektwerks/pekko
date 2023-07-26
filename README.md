@@ -11,16 +11,16 @@ Run
 1. sbt run
 ```
 Multiple main classes detected. Select one to run:
- [1] objektwerks.ChartApp
- [2] objektwerks.FileApp
- [3] objektwerks.FutureApp
+ [1] objektwerks.runChartApp
+ [2] objektwerks.runFileApp
+ [3] objektwerks.runFutureApp
  [4] objektwerks.stream.ActorApp
  [5] objektwerks.typed.EventSourceApp
- [6] objektwerks.typed.FactorialApp
- [7] objektwerks.typed.NowApp
- [8] objektwerks.typed.PingFpApp
- [9] objektwerks.typed.PingOoApp
- [10] objektwerks.typed.runGreeterApp
+ [6] objektwerks.typed.PingFpApp
+ [7] objektwerks.typed.PingOoApp
+ [8] objektwerks.typed.runFactorialApp
+ [9] objektwerks.typed.runGreeterApp
+ [10] objektwerks.typed.runNowApp
 
 Enter number:
 ```
