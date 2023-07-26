@@ -56,16 +56,13 @@ object CalculationActor {
   }
 }
 
-object FactorialApp {
-  def main(args: Array[String]): Unit = {
-    val system = ActorSystem[Calculation](CalculationActor(), "factorial-app")
-    system.log.info("*** CalculationActor started!")
-    system.log.info("*** FactorialApp running!")
-    system ! Calculate(List[Long](3, 4, 5))
-    system ! Calculate(List[Long](6, 7, 8))
-    system ! Calculate(List[Long](9, 10, 11))
-    Thread.sleep(1000L)
-    system.log.info("*** FactorialApp terminating ...")
-    system.terminate()
-  }
-}
+@main def runFactorialApp: Unit =
+  val system = ActorSystem[Calculation](CalculationActor(), "factorial-app")
+  system.log.info("*** CalculationActor started!")
+  system.log.info("*** FactorialApp running!")
+  system ! Calculate(List[Long](3, 4, 5))
+  system ! Calculate(List[Long](6, 7, 8))
+  system ! Calculate(List[Long](9, 10, 11))
+  Thread.sleep(1000L)
+  system.log.info("*** FactorialApp terminating ...")
+  system.terminate()
