@@ -8,11 +8,10 @@ import org.jfree.chart.plot.XYPlot
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer
 import org.jfree.data.time.{TimeSeries, TimeSeriesCollection}
 
-object Chart {
+object Chart:
   def apply(timeSeries: TimeSeries): StreamingChart = new StreamingChart(timeSeries)
-}
 
-class StreamingChart(timeSeries: TimeSeries) {
+class StreamingChart(timeSeries: TimeSeries):
   val xyPlot = new XYPlot()
 
   val timeSeriesCollection = new TimeSeriesCollection( timeSeries )
@@ -31,4 +30,3 @@ class StreamingChart(timeSeries: TimeSeries) {
   xyPlot.setRangeAxis(yAxis)
 
   val jFreeChart = new JFreeChart("Streaming Chart", JFreeChart.DEFAULT_TITLE_FONT, xyPlot, true)
-}
