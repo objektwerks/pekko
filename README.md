@@ -1,6 +1,6 @@
 Pekko
 -----
->Pekko feature tests.
+>Pekko feature tests using Scala 3.
 
 Note
 ----
