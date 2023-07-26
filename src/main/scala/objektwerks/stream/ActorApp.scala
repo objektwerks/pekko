@@ -21,15 +21,13 @@ final case class Processed(worker: Int)
   * Doing so incurs a huge performance penalty! Use this technique:
   * log.info("*** commment {}", message)
   */
-final class Worker(id: Int) extends Actor with ActorLogging {
+final class Worker(id: Int) extends Actor with ActorLogging:
   log.info("*** worker actor {} intialized", id)
 
-  def receive: Receive = {
+  def receive: Receive =
     case work @ Work(id) => log.info("*** name: {} id: {} working ...", context.self.path.name, id)
-  }
-}
 
-final class Manager(workers: Int) extends Actor with ActorLogging {
+final class Manager(workers: Int) extends Actor with ActorLogging:
   val router = {
     val routees = (1 to workers).map { worker =>
       ActorRefRoutee( context.actorOf(Props(classOf[Worker], worker), name = s"worker-$worker") )
@@ -38,13 +36,11 @@ final class Manager(workers: Int) extends Actor with ActorLogging {
   }
   log.info("*** manager actor intialized")
 
-  def receive: Receive = {
+  def receive: Receive =
     case work @ Work(worker) =>
       log.info("*** manager actor received work: {}", work)
       router.route(work, sender())
       sender() ! Processed(worker)
-  }
-}
 
 @main def runActorApp: Unit =
   val workers = 10
