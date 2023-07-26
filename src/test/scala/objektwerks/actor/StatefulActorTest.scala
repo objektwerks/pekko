@@ -3,7 +3,6 @@ package objektwerks.actor
 import org.apache.pekko.actor.typed.{Behavior, PostStop}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
-
 import org.scalatest.wordspec.AnyWordSpecLike
 
 sealed trait Emotion extends Product with Serializable

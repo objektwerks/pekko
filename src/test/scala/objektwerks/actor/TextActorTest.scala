@@ -3,7 +3,6 @@ package objektwerks.actor
 import org.apache.pekko.actor.typed.{ActorRef, Behavior, PostStop}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
-
 import org.scalatest.wordspec.AnyWordSpecLike
 
 final case class Text(text: String, replyTo: ActorRef[Echo]) extends Product with Serializable
