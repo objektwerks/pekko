@@ -1,6 +1,7 @@
 package objektwerks.typed
 
 import org.apache.pekko.actor.testkit.typed.scaladsl.ScalaTestWithActorTestKit
+
 import org.scalatest.funsuite.AnyFunSuiteLike
 
 import objektwerks.typed.Greeter.{Greet, Greeted}
