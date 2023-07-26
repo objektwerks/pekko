@@ -15,14 +15,13 @@ import scala.concurrent.duration.*
 import scala.language.postfixOps
 import scala.concurrent.ExecutionContextExecutor
 
-class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers {
+class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
   given system: ActorSystem = ActorSystem.create("streams", ConfigFactory.load("test.conf"))
   given dispatcher: ExecutionContextExecutor = system.dispatcher
 
-  override protected def afterAll(): Unit = {
+  override protected def afterAll(): Unit =
     Await.result(system.terminate(), 3 seconds)
     ()
-  }
 
   test("source") {
     val source = Source(1 to 10)
@@ -85,4 +84,3 @@ class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers {
     val sink = Sink.reduce[Int](_ + _)
     Await.result( source.via(flowGraph).toMat(sink)(Keep.right).run(), 1 second ) shouldBe 130
   }
-}
