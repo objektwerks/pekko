@@ -7,20 +7,18 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.language.postfixOps
 
-class Echo extends Actor {
-  def receive: Receive = {
+class Echo extends Actor:
+  def receive: Receive =
     case echo: String => sender() ! echo
-  }
-}
 
 class ActorTest extends TestKit(ActorSystem("actor-test", Conf.config))
   with ImplicitSender
   with AnyWordSpecLike
   with Matchers
-  with BeforeAndAfterAll {
+  with BeforeAndAfterAll:
   val echo = system.actorOf(Props[Echo](), name = "echo")
 
   override protected def afterAll(): Unit = TestKit.shutdownActorSystem(system)
@@ -45,4 +43,3 @@ class ActorTest extends TestKit(ActorSystem("actor-test", Conf.config))
       expectMsg("test")
     }
   }
-}
