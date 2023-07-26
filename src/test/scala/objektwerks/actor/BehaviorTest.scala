@@ -1,12 +1,12 @@
-package akka
+package objektwerks.actor
 
-import akka.actor._
-import akka.util.Timeout
+import org.apache.pekko.actor.*
+import org.apache.pekko.util.Timeout
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 
 import scala.concurrent.Await
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.language.postfixOps
 
 case object Ready
@@ -15,41 +15,34 @@ case object Bike
 case object Run
 case object Finish
 
-class Triathlete extends Actor with ActorLogging {
+class Triathlete extends Actor with ActorLogging:
   def receive: Receive = prepare
 
-  def prepare: Receive = {
+  def prepare: Receive =
     case Ready => log.info("*** Triathlete ready!")
     case Swim => log.info("*** Triathlete swimming!"); context.become(swim)
-  }
 
-  def swim: Receive = {
+  def swim: Receive =
     case Bike => log.info("*** Triathlete biking!"); context.become(bike)
-  }
 
-  def bike: Receive = {
+  def bike: Receive =
     case Run => log.info("*** Triathlete running!"); context.become(run)
-  }
 
-  def run: Receive = {
+  def run: Receive =
     case Finish => log.info("*** Triathlete finished race!"); context.become(prepare)
-  }
 
-  override def unhandled(message: Any): Unit = {
+  override def unhandled(message: Any): Unit =
     super.unhandled(message)
     log.info(s"*** Triathlete failed to handle message: $message.")
-  }
-}
 
-class BehaviorTest extends AnyFunSuite with BeforeAndAfterAll {
-  implicit val timeout = Timeout(1 second)
+class BehaviorTest extends AnyFunSuite with BeforeAndAfterAll:
+  given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("behavior", Conf.config)
   val triathlete = system.actorOf(Props[Triathlete](), name = "triathlete")
 
-  override protected def afterAll(): Unit = {
+  override protected def afterAll(): Unit =
     Await.result(system.terminate(), 1 second)
     ()
-  }
 
   test("race") {
     triathlete ! Ready
@@ -58,4 +51,3 @@ class BehaviorTest extends AnyFunSuite with BeforeAndAfterAll {
     triathlete ! Run
     triathlete ! Finish
   }
-}
