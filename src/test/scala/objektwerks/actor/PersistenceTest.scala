@@ -59,7 +59,7 @@ class Computer extends PersistentActor with ActorLogging:
 class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(11 seconds)
   val system = ActorSystem.create("persistence", Conf.config)
-  val computer = system.actorOf(Props[Computer](), name = "computer")
+  val computer = system.actorOf(Props[Computer](), name = "computer-actor")
   given dispatcher: ExecutionContext = system.dispatcher
 
   def fibonacci(n: Int): Int =
