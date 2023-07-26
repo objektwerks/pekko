@@ -5,12 +5,12 @@ import org.apache.pekko.actor.typed.scaladsl.Behaviors
 
 import scala.annotation.tailrec
 
-sealed trait Calculation extends Product with Serializable
+sealed trait Calculation
 final case class Calculate(numbers: List[Long]) extends Calculation
 final case class CalculateFactorials(numbers: List[Long], replyTo: ActorRef[Calculation]) extends Calculation
 final case class FactorialsCalculated(numbers: List[Long]) extends Calculation
 
-object FactorialActor {
+object FactorialActor:
   def apply(): Behavior[Calculation] = Behaviors.receive[Calculation] {
     (context, calculation) => calculation match {
       case CalculateFactorials(numbers, replyTo) =>
@@ -26,13 +26,12 @@ object FactorialActor {
   }
 
   @tailrec
-  def factorial(n: Long, acc: Long = 1): Long = n match {
-    case i if i < 1 => acc
-    case _ => factorial(n - 1, acc * n)
-  }
-}
+  def factorial(n: Long, acc: Long = 1): Long =
+    n match
+      case i if i < 1 => acc
+      case _ => factorial(n - 1, acc * n)
 
-object CalculationActor {
+object CalculationActor:
   def apply(): Behavior[Calculation] = Behaviors.setup[Calculation] { context =>
     val factorialActor = context.spawn(FactorialActor(), "factorial-actor")
     context.log.info("*** FactorialActor started!")
@@ -54,7 +53,6 @@ object CalculationActor {
         Behaviors.same
     }
   }
-}
 
 @main def runFactorialApp: Unit =
   val system = ActorSystem[Calculation](CalculationActor(), "factorial-app")
