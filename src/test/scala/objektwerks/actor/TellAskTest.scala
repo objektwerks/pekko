@@ -1,16 +1,14 @@
-package akka
+package objektwerks.actor
 
-import java.util.concurrent.TimeUnit
-
-import akka.actor._
-import akka.pattern._
-import akka.util.Timeout
+import org.apache.pekko.actor.*
+import org.apache.pekko.pattern.*
+import org.apache.pekko.util.Timeout
 
 import org.scalatest.BeforeAndAfterAll
 import org.scalatest.funsuite.AnyFunSuite
 
 import scala.concurrent.Await
-import scala.concurrent.duration._
+import scala.concurrent.duration.*
 import scala.language.postfixOps
 
 sealed trait Message
@@ -19,13 +17,13 @@ case class TellWorker(message: String) extends Message
 case class Ask(message: String) extends Message
 case class AskWorker(message: String) extends Message
 
-class Master extends Actor with ActorLogging {
+class Master extends Actor with ActorLogging:
   import context.dispatcher
 
-  implicit val timeout = new Timeout(1, TimeUnit.SECONDS)
+  given timeout: Timeout = new Timeout(1 second)
   val worker = context.actorOf(Props[Worker](), name = "worker")
 
-  def receive: Receive = {
+  def receive: Receive =
     case Tell(message) =>
       log.info(s"*** [Tell] Master received tell message: $message.")
     case tellWorker @ TellWorker(message) =>
@@ -39,28 +37,23 @@ class Master extends Actor with ActorLogging {
       log.info(s"*** [Ask Worker] ask worker message ? Worker, pipeTo Master: $message.")
       worker ? askWorker pipeTo sender()
       ()
-  }
-}
 
-class Worker extends Actor with ActorLogging {
-  def receive: Receive = {
+class Worker extends Actor with ActorLogging:
+  def receive: Receive =
     case TellWorker(message) =>
       log.info(s"*** [Tell Worker] Worker received tell worker message from master: $message.")
     case AskWorker(message) =>
       log.info(s"*** [Ask Worker] Worker received ask worker message from master: $message.")
       sender() ! s"Worker responded to $message."
-  }
-}
 
-class TellAskTest extends AnyFunSuite with BeforeAndAfterAll {
-  implicit val timeout = Timeout(1 second)
+class TellAskTest extends AnyFunSuite with BeforeAndAfterAll:
+  given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("tellask", Conf.config)
   val master = system.actorOf(Props[Master](), name = "master")
 
-  override protected def afterAll(): Unit = {
+  override protected def afterAll(): Unit =
     Await.result(system.terminate(), 1 second)
     ()
-  }
 
   test("master ! tell") {
     master ! Tell("master ! tell")
@@ -77,4 +70,3 @@ class TellAskTest extends AnyFunSuite with BeforeAndAfterAll {
   test("master ? ask worker") {
     assert( Await.result((master ? AskWorker("master ? ask worker")).mapTo[String], 1 second).nonEmpty )
   }
-}
