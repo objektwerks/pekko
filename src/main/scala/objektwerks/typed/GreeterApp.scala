@@ -5,6 +5,10 @@ import org.apache.pekko.actor.typed.scaladsl.Behaviors
 
 import objektwerks.typed.GreeterMain.SayHello
 
+@main def runGreeterApp: Unit =
+  val greeterMain: ActorSystem[GreeterMain.SayHello] = ActorSystem(GreeterMain(), "PekkoQuickstart")
+  greeterMain ! SayHello("Charles")
+
 object Greeter:
   final case class Greet(whom: String, replyTo: ActorRef[Greeted])
   final case class Greeted(whom: String, from: ActorRef[Greet])
@@ -41,7 +45,3 @@ object GreeterMain:
         Behaviors.same
       }
     }
-
-@main def runGreeterApp: Unit =
-  val greeterMain: ActorSystem[GreeterMain.SayHello] = ActorSystem(GreeterMain(), "PekkoQuickstart")
-  greeterMain ! SayHello("Charles")
