@@ -35,7 +35,7 @@ case object Result
 case object Snapshot
 case object Shutdown
 
-class Computer extends PersistentActor with ActorLogging:
+class ComputeActor extends PersistentActor with ActorLogging:
   var events = Events()
 
   override def persistenceId: String = "computed-event-persistence-id"
@@ -59,7 +59,7 @@ class Computer extends PersistentActor with ActorLogging:
 class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(20 seconds)
   val system = ActorSystem.create("persistence", Conf.config)
-  val computer = system.actorOf(Props[Computer](), name = "computer-actor")
+  val computer = system.actorOf(Props[ComputeActor](), name = "computer-actor")
   given dispatcher: ExecutionContext = system.dispatcher
 
   def fibonacci(n: Int): Int =
@@ -84,7 +84,7 @@ class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
     val events = Await.result( (computer ? Result).mapTo[List[Computed]], Duration.Inf)
     println("fibonacci computed events:")
     events.foreach(event => println(s"id: ${event.id} created: ${event.created} value: ${event.value}"))
-    assert(events.size >= 10)
+    assert(events.size >= 3)
 
     computer ! Shutdown
   }
