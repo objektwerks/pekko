@@ -6,7 +6,7 @@ import org.apache.pekko.actor.typed.scaladsl.Behaviors
 import org.apache.pekko.actor.typed.{ActorSystem, Behavior, PostStop}
 
 object PingFpApp:
-  final case class Ping(message: String) extends Product with Serializable
+  final case class Ping(message: String)
 
   def apply(): Behavior[Ping] = Behaviors.receive[Ping] {
     (context, ping) => ping match {
