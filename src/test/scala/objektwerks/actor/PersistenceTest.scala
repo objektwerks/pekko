@@ -38,7 +38,7 @@ case object Shutdown
 class ComputeActor extends PersistentActor with ActorLogging:
   var events = Events()
 
-  override def persistenceId: String = "computed-event-persistence-id"
+  override def persistenceId: String = "compute-actor-event-persistence-id"
 
   def updateState(event: Computed): Unit =
     events = events.add(event)
@@ -46,7 +46,7 @@ class ComputeActor extends PersistentActor with ActorLogging:
   override def receiveCommand: Receive =
     case command: Compute => persistAsync(Computed(command.execute))(updateState)
     case Snapshot => saveSnapshot(events)
-    case SaveSnapshotSuccess(metadata) => log.info(s"*** Computer snapshot successful: $metadata")
+    case SaveSnapshotSuccess(metadata) => log.info(s"*** Compute actor snapshot successful: $metadata")
     case SaveSnapshotFailure(_, reason) => throw reason
     case Result => sender() ! events.list
     case Shutdown => context.stop(self)
@@ -54,12 +54,12 @@ class ComputeActor extends PersistentActor with ActorLogging:
   override def receiveRecover: Receive =
     case event: Computed => updateState(event)
     case SnapshotOffer(_, snapshot: Events) => events = snapshot
-    case RecoveryCompleted => log.info("*** Computer snapshot recovery completed.")
+    case RecoveryCompleted => log.info("*** Compute actor snapshot recovery completed.")
 
 class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(20 seconds)
   val system = ActorSystem.create("persistence", Conf.config)
-  val computeActor = system.actorOf(Props[ComputeActor](), name = "computer-actor")
+  val computeActor = system.actorOf(Props[ComputeActor](), name = "compute-actor")
   given dispatcher: ExecutionContext = system.dispatcher
 
   def fibonacci(n: Int): Int =
