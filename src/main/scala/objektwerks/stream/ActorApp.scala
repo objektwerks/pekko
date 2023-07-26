@@ -46,32 +46,29 @@ final class Manager(workers: Int) extends Actor with ActorLogging {
   }
 }
 
-object ActorApp {
-  def main(args: Array[String]): Unit = {
-    val workers = 10
-    val parallelism = Runtime.getRuntime.availableProcessors
+@main def runActorApp: Unit =
+  val workers = 10
+  val parallelism = Runtime.getRuntime.availableProcessors
 
-    given system: ActorSystem = ActorSystem.create("actor-app", ConfigFactory.load("app.conf"))
-    given timeout: Timeout = Timeout(10 seconds)
-    val manager = system.actorOf(Props(classOf[Manager], workers), name = "manager")
-    println("*** akka system started")
+  given system: ActorSystem = ActorSystem.create("actor-app", ConfigFactory.load("app.conf"))
+  given timeout: Timeout = Timeout(10 seconds)
+  val manager = system.actorOf(Props(classOf[Manager], workers), name = "manager")
+  println("*** akka system started")
 
-    println(s"*** sourcing work for $workers actor [worker] routees, with parallelism set to: $parallelism ...")
-    Source(1 to workers)
-      .mapAsync(parallelism) { worker =>
-        (manager ? Work(worker) ).mapTo[Processed]
-      }
-      .map { processed =>
-        println(s"*** processed work from worker: ${processed.worker}")
-      }
-      .runWith(Sink.ignore)
-    println(s"*** once all work results have been printed, depress RETURN key to shutdown app")
+  println(s"*** sourcing work for $workers actor [worker] routees, with parallelism set to: $parallelism ...")
+  Source(1 to workers)
+    .mapAsync(parallelism) { worker =>
+      (manager ? Work(worker) ).mapTo[Processed]
+    }
+    .map { processed =>
+      println(s"*** processed work from worker: ${processed.worker}")
+    }
+    .runWith(Sink.ignore)
+  println(s"*** once all work results have been printed, depress RETURN key to shutdown app")
 
-    StdIn.readLine()
+  StdIn.readLine()
 
-    Await.result(system.terminate(), 10 seconds)
-    println("*** akka system terminated")
-    println("*** see log at /target/app.log")
-    println("*** app shutdown")
-  }
-}
+  Await.result(system.terminate(), 10 seconds)
+  println("*** akka system terminated")
+  println("*** see log at /target/app.log")
+  println("*** app shutdown")
