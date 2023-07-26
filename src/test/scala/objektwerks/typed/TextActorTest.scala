@@ -1,4 +1,4 @@
-package objektwerks.actor
+package objektwerks.typed
 
 import org.apache.pekko.actor.typed.{ActorRef, Behavior, PostStop}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors

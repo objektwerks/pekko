@@ -1,9 +1,9 @@
-package objektwerks.actor
+package objektwerks.typed
 
 import org.apache.pekko.actor.typed.{ActorRef, ActorSystem, Behavior}
 import org.apache.pekko.actor.typed.scaladsl.Behaviors
 
-import objektwerks.actor.GreeterMain.SayHello
+import objektwerks.typed.GreeterMain.SayHello
 
 object Greeter:
   final case class Greet(whom: String, replyTo: ActorRef[Greeted])

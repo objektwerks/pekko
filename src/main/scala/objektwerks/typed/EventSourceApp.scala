@@ -1,4 +1,4 @@
-package typed
+package objektwerks.typed
 
 import org.apache.pekko.actor.typed.*
 import org.apache.pekko.actor.typed.scaladsl.Behaviors

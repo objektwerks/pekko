@@ -1,4 +1,4 @@
-package objektwerks.actor
+package objektwerks.typed
 
 import java.time.Instant
 
