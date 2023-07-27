@@ -7,8 +7,8 @@ Note
 >The transition from Akka to Pekko is a relatively smooth process, principally
 >requiring only package name changes and implicit-to-given conversions.
 
->The GraphDSL proved problematic ( see StreamTest ), though. And Akka-Persistence
->fails to load the default journal plugin ( see PersistenceTest and test.conf ).
+>The GraphDSL proved problematic ( see StreamTest ). And Akka-Persistence fails
+>to load the default journal plugin ( see PersistenceTest and test.conf ).
 
 >Finally, Pekko-Http has ***not*** yet been pubished.
 
