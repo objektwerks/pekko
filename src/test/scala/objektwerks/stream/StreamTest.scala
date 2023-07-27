@@ -84,3 +84,49 @@ class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
     val sink = Sink.reduce[Int](_ + _)
     Await.result( source.via(flowGraph).toMat(sink)(Keep.right).run(), 1 second ) shouldBe 130
   }
+
+/* See embedded comments!
+  test("graph") {
+    val source = Source(1 to 10)
+    val incrementer = Flow[Int].map(_ + 1)
+    val multiplier = Flow[Int].map(_ * 2)
+    val sink = Sink.reduce[(Int, Int)]( (a, b) => (a._1 + a._2, b._1 + b._2) )
+
+    val graph = RunnableGraph.fromGraph(
+      GraphDSL.create(sink) { implicit builder => sink =>
+        import GraphDSL.Implicits._
+
+        val broadcast = builder.add(Broadcast[Int](2))
+        val zip = builder.add(Zip[Int, Int]())
+
+        source ~> broadcast
+        broadcast.out(0) ~> incrementer ~> zip.in0
+        broadcast.out(1) ~> multiplier ~> zip.in1
+        // Code breaks here: zip.out ~> sink
+
+        ClosedShape
+      }
+    )
+    Await.result( graph.run(), 1 second ) shouldEqual( (144,31) )
+  }
+
+  test("sink graph") {
+    val sink1 = Sink.reduce[Int](_ + _)
+    val sink2 = Sink.reduce[Int](_ + _)
+
+    val sinkGraph = Sink.fromGraph(
+      GraphDSL.create(sink1, sink2)((_, _)) { implicit builder => (sink1, sink2) =>
+        import GraphDSL.Implicits._
+
+        val broadcast = builder.add(Broadcast[Int](2))
+        // Code breaks here: broadcast ~> sink1
+        // Code breaks here: broadcast ~> sink2
+
+        SinkShape(broadcast.in)
+      }
+    )
+    val source = Source(1 to 10)
+    val futures = source.runWith(sinkGraph)
+    Await.result( Future.sequence(List(futures._1, futures._2)), 1 second ).sum shouldBe 110
+  }
+*/
