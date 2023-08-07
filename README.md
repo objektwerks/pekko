@@ -19,16 +19,17 @@ Run
 1. sbt run
 ```
 Multiple main classes detected. Select one to run:
- [1] objektwerks.runChartApp
- [2] objektwerks.runFileApp
- [3] objektwerks.runFutureApp
- [4] objektwerks.stream.runActorApp
- [5] objektwerks.typed.EventSourceApp
- [6] objektwerks.typed.PingFpApp
- [7] objektwerks.typed.PingOoApp
- [8] objektwerks.typed.runFactorialApp
- [9] objektwerks.typed.runGreeterApp
- [10] objektwerks.typed.runNowApp
+ [1] objektwerks.http.NowApp
+ [2] objektwerks.runChartApp
+ [3] objektwerks.runFileApp
+ [4] objektwerks.runFutureApp
+ [5] objektwerks.stream.runActorApp
+ [6] objektwerks.typed.EventSourceApp
+ [7] objektwerks.typed.PingFpApp
+ [8] objektwerks.typed.PingOoApp
+ [9] objektwerks.typed.runFactorialApp
+ [10] objektwerks.typed.runGreeterApp
+ [11] objektwerks.typed.runNowApp
 
-Enter number:
+Enter number: 
 ```
