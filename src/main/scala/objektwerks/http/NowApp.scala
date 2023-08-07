@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.ExecutionContext
 import scala.io.StdIn
 
-object NowApp extends App with NowService {
+object NowApp extends App with NowService:
   val logger = LoggerFactory.getLogger(getClass)
   val conf = ConfigFactory.load("now.app.conf")
 
@@ -31,4 +31,3 @@ object NowApp extends App with NowService {
       system.terminate()
       logger.info("*** NowApp stopped.")
     }
-}
