@@ -10,8 +10,6 @@ Note
 >The GraphDSL proved problematic ( see StreamTest ). And Akka-Persistence fails
 >to load the default journal plugin ( see PersistenceTest and test.conf ).
 
->Finally, Pekko-Http has ***not*** yet been pubished.
-
 Test
 ----
 1. sbt clean test
