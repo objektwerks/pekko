@@ -20,6 +20,7 @@ libraryDependencies ++= {
     "org.iq80.leveldb" % "leveldb" % "0.12" % Test,
     "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8" % Test,
     "org.apache.pekko" %% "pekko-actor-testkit-typed" % pekkoVersion % Test,
+    "org.apache.pekko" %% "pekko-http-testkit" % pekkoVersion % Test,
     "org.scalatest" %% "scalatest" % "3.2.16" % Test
   )
 }
