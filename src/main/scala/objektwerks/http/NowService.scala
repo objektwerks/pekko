@@ -15,7 +15,7 @@ object NowJsonCodecs:
 
 case class Now(time: String = LocalTime.now.toString)
 
-trait NowService {
+trait NowService:
   import org.apache.pekko.http.scaladsl.marshallers.sprayjson.SprayJsonSupport.*
   import NowJsonCodecs.given
 
@@ -35,4 +35,3 @@ trait NowService {
     getFromResourceDirectory("public")
   }
   val routes = api ~ index ~ resources
-}
