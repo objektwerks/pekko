@@ -12,6 +12,7 @@ libraryDependencies ++= {
     "org.apache.pekko" %% "pekko-persistence-typed" % pekkoVersion,
     "org.apache.pekko" %% "pekko-stream-typed" % pekkoVersion,
     "org.apache.pekko" %% "pekko-slf4j" % pekkoVersion,
+    "com.lihaoyi" %% "upickle" % "3.1.2",
     "org.jfree" % "jfreechart" % "1.5.4",
     "com.formdev" % "flatlaf" % "3.1.1",
     "ch.qos.logback" % "logback-classic" % "1.4.8",
