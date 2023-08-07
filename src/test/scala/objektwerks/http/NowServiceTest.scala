@@ -10,7 +10,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class NowServiceTest extends AnyWordSpec with Matchers with BeforeAndAfterAll with NowService {
+class NowServiceTest extends AnyWordSpec with Matchers with BeforeAndAfterAll with NowService:
   import org.apache.pekko.http.scaladsl.marshallers.sprayjson.SprayJsonSupport.*
 
   given system: ActorSystem = ActorSystem.create("now", ConfigFactory.load("test.conf"))
@@ -18,11 +18,10 @@ class NowServiceTest extends AnyWordSpec with Matchers with BeforeAndAfterAll wi
     .newServerAt("localhost", 0)
     .bindFlow(routes)
 
-  override protected def afterAll(): Unit = {
+  override protected def afterAll(): Unit =
     server
       .flatMap(_.unbind())
       .onComplete(_ => system.terminate())
-  }
 
   "NowService" should {
     "get and post" in {
@@ -34,4 +33,3 @@ class NowServiceTest extends AnyWordSpec with Matchers with BeforeAndAfterAll wi
       }
     }
   }
-}
