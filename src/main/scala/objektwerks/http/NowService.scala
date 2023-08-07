@@ -4,11 +4,19 @@ import java.time.LocalTime
 
 import org.apache.pekko.http.scaladsl.model.StatusCodes.OK
 import org.apache.pekko.http.scaladsl.server.Directives.*
-import org.apache.pekko.http.scaladsl.marshalling.ToResponseMarshallable
+import org.apache.pekko.http.scaladsl.marshalling.*
+
+import spray.json.*
+
+object NowJsonCodecs extends DefaultJsonProtocol:
+  given JsonFormat[Now] = jsonFormat1(Now.apply(_))
 
 case class Now(time: String = LocalTime.now.toString)
 
 trait NowService {
+  import spray.json.*
+  import NowJsonCodecs.given
+
   val getNow = get {
     complete(OK -> Now())
   }
