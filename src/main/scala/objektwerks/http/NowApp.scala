@@ -12,6 +12,7 @@ import scala.io.StdIn
 object NowApp extends App with NowService {
   val logger = LoggerFactory.getLogger(getClass)
   val conf = ConfigFactory.load("now.app.conf")
+
   given system: ActorSystem = ActorSystem.create(conf.getString("server.name"), conf)
   given executor: ExecutionContext = system.dispatcher
 
