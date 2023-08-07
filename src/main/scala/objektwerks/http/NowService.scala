@@ -2,7 +2,9 @@ package objektwerks.http
 
 import java.time.LocalTime
 
-import de.heikoseeberger.akkahttpupickle.UpickleSupport._
+import org.apache.pekko.http.scaladsl.model.StatusCodes.OK
+import org.apache.pekko.http.scaladsl.server.Directives.*
+import org.apache.pekko.http.scaladsl.marshalling.ToResponseMarshallable
 
 case class Now(time: String = LocalTime.now.toString)
 

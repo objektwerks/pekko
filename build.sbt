@@ -6,6 +6,7 @@ libraryDependencies ++= {
   Seq(
     "org.apache.pekko" %% "pekko-actor" % pekkoVersion,
     "org.apache.pekko" %% "pekko-http" % pekkoVersion,
+    "org.apache.pekko" %% "pekko-http-spray-json" % pekkoVersion,
     "org.apache.pekko" %% "pekko-persistence" % pekkoVersion,
     "org.apache.pekko" %% "pekko-stream" % pekkoVersion,
     "org.apache.pekko" %% "pekko-actor-typed" % pekkoVersion,
