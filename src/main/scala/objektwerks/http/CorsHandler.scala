@@ -9,7 +9,7 @@ import org.apache.pekko.http.scaladsl.server.{Directive0, Route}
 /**
  * See: https://dzone.com/articles/handling-cors-in-akka-http
  */
-trait CorsHandler {
+trait CorsHandler:
   val corsResponseHeaders = List(
     `Access-Control-Allow-Origin`.*,
     `Access-Control-Allow-Credentials`(true),
@@ -26,4 +26,3 @@ trait CorsHandler {
   }
 
   def addCORSHeaders(response: HttpResponse): HttpResponse = response.withHeaders( corsResponseHeaders )
-}
