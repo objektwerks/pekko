@@ -8,12 +8,6 @@ import org.apache.pekko.http.scaladsl.marshalling.ToResponseMarshallable
 
 case class Now(time: String = LocalTime.now.toString)
 
-object Now {
-  import upickle.default._
-
-  implicit val nowRW: ReadWriter[Now] = macroRW
-}
-
 trait NowService {
   val getNow = get {
     complete(OK -> Now())
