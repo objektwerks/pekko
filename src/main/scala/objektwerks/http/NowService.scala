@@ -4,7 +4,6 @@ import java.time.LocalTime
 
 import org.apache.pekko.http.scaladsl.model.StatusCodes.OK
 import org.apache.pekko.http.scaladsl.server.Directives.*
-import org.apache.pekko.http.scaladsl.marshalling.*
 
 import spray.json.*
 
@@ -14,6 +13,8 @@ object NowJsonCodecs extends DefaultJsonProtocol:
 case class Now(time: String = LocalTime.now.toString)
 
 trait NowService {
+  import org.apache.pekko.http.scaladsl.marshalling.*
+  import org.apache.pekko.http.scaladsl.unmarshalling.*
   import spray.json.*
   import NowJsonCodecs.given
 
