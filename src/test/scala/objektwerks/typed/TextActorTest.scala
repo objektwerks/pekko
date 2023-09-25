@@ -23,7 +23,7 @@ object TextActor:
       Behaviors.same
   }
 
-class TextActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
+final class TextActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
   "TextActor behavior" should {
     "text / echo" in {
       val testProbe = createTestProbe[Echo]("test-probe")
