@@ -15,7 +15,7 @@ case object Bike
 case object Run
 case object Finish
 
-class Triathlete extends Actor with ActorLogging:
+final class Triathlete extends Actor with ActorLogging:
   def receive: Receive = prepare
 
   def prepare: Receive =
