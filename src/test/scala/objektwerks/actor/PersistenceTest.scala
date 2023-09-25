@@ -17,17 +17,17 @@ import scala.concurrent.duration.*
 import scala.language.postfixOps
 import scala.concurrent.ExecutionContext
 
-case class Compute(f: Int => Int,
-                   n: Int,
-                   id: String = UUID.randomUUID.toString,
-                   created: LocalTime = LocalTime.now):
+final case class Compute(f: Int => Int,
+                         n: Int,
+                         id: String = UUID.randomUUID.toString,
+                         created: LocalTime = LocalTime.now):
   def execute: Int = f(n)
 
-case class Computed(value: Int,
-                    id: String = UUID.randomUUID.toString,
-                    created: LocalTime = LocalTime.now)
+final case class Computed(value: Int,
+                          id: String = UUID.randomUUID.toString,
+                          created: LocalTime = LocalTime.now)
 
-case class Events(events: List[Computed] = Nil):
+final case class Events(events: List[Computed] = Nil):
   def add(event: Computed): Events = copy(event :: events)
   def list: List[Computed] = events
 
@@ -35,7 +35,7 @@ case object Result
 case object Snapshot
 case object Shutdown
 
-class ComputeActor extends PersistentActor with ActorLogging:
+final class ComputeActor extends PersistentActor with ActorLogging:
   var events = Events()
 
   override def persistenceId: String = "compute-actor-event-persistence-id"
@@ -56,7 +56,7 @@ class ComputeActor extends PersistentActor with ActorLogging:
     case SnapshotOffer(_, snapshot: Events) => events = snapshot
     case RecoveryCompleted => log.info("*** Compute actor snapshot recovery completed.")
 
-class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
+final class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(20 seconds)
   val system = ActorSystem.create("persistence", Conf.config)
   val computeActor = system.actorOf(Props[ComputeActor](), name = "compute-actor")
@@ -74,7 +74,7 @@ class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
     Await.result(system.terminate(), 3 seconds)
     ()
 
-  test("persistence") {
+  test("persistence"):
   /* Pekko Persistence fails to load journal plugin! See test.conf persistence section!
     for (n <- 1 to 10) computeActor ! Compute(fibonacci, n)
     Thread.sleep(3000)
@@ -89,4 +89,3 @@ class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
 
     computeActor ! Shutdown
   */
-  }
