@@ -13,11 +13,11 @@ sealed trait State
 case object Off extends State
 case object On extends State
 
-case class Data(flowRate: Int)
+final case class Data(flowRate: Int)
 
-case class Event(state: State, data: Data)
+final case class Event(state: State, data: Data)
 
-class Pump extends Actor with FSM[State, Data]:
+final class Pump extends Actor with FSM[State, Data]:
   startWith(Off, Data(0))
   when(Off) {
     case Event(On, Data(flowRate)) => goto(On) using Data(flowRate)
@@ -27,7 +27,7 @@ class Pump extends Actor with FSM[State, Data]:
   }
   initialize()
 
-class FSMTest extends AnyFunSuite with BeforeAndAfterAll:
+final class FSMTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("fsm", Conf.config)
   val pump = system.actorOf(Props[Pump](), name = "pump")
@@ -36,7 +36,6 @@ class FSMTest extends AnyFunSuite with BeforeAndAfterAll:
     Await.result(system.terminate(), 1 second)
     ()
 
-  test("fsm") {
+  test("fsm"):
     pump ! Event(On, Data(1))
     pump ! Event(Off, Data(0))
-  }
