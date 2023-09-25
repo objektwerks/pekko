@@ -12,12 +12,12 @@ import scala.concurrent.duration.*
 import scala.language.postfixOps
 
 sealed trait Message
-case class Tell(message: String) extends Message
-case class TellWorker(message: String) extends Message
-case class Ask(message: String) extends Message
-case class AskWorker(message: String) extends Message
+final case class Tell(message: String) extends Message
+final case class TellWorker(message: String) extends Message
+final case class Ask(message: String) extends Message
+final case class AskWorker(message: String) extends Message
 
-class Master extends Actor with ActorLogging:
+final class Master extends Actor with ActorLogging:
   import context.dispatcher
 
   given timeout: Timeout = new Timeout(1 second)
@@ -38,7 +38,7 @@ class Master extends Actor with ActorLogging:
       worker ? askWorker pipeTo sender()
       ()
 
-class Worker extends Actor with ActorLogging:
+final class Worker extends Actor with ActorLogging:
   def receive: Receive =
     case TellWorker(message) =>
       log.info(s"*** [Tell Worker] Worker received tell worker message from master: $message.")
@@ -46,7 +46,7 @@ class Worker extends Actor with ActorLogging:
       log.info(s"*** [Ask Worker] Worker received ask worker message from master: $message.")
       sender() ! s"Worker responded to $message."
 
-class TellAskTest extends AnyFunSuite with BeforeAndAfterAll:
+final class TellAskTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("tellask", Conf.config)
   val master = system.actorOf(Props[Master](), name = "master")
@@ -55,18 +55,14 @@ class TellAskTest extends AnyFunSuite with BeforeAndAfterAll:
     Await.result(system.terminate(), 1 second)
     ()
 
-  test("master ! tell") {
+  test("master ! tell"):
     master ! Tell("master ! tell")
-  }
 
-  test("master ! tell worker") {
+  test("master ! tell worker"):
     master ! TellWorker("master ! tell worker")
-  }
 
-  test("master ? ask") {
+  test("master ? ask"):
     assert( Await.result((master ? Ask("master ? ask")).mapTo[String], 1 second).nonEmpty )
-  }
 
-  test("master ? ask worker") {
+  test("master ? ask worker"):
     assert( Await.result((master ? AskWorker("master ? ask worker")).mapTo[String], 1 second).nonEmpty )
-  }
