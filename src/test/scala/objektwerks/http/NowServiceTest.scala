@@ -11,7 +11,7 @@ import org.scalatest.BeforeAndAfterAll
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class NowServiceTest extends AnyWordSpec with Matchers with ScalatestRouteTest with BeforeAndAfterAll with NowService:
+final class NowServiceTest extends AnyWordSpec with Matchers with ScalatestRouteTest with BeforeAndAfterAll with NowService:
   import org.apache.pekko.http.scaladsl.marshallers.sprayjson.SprayJsonSupport.*
   import NowJsonCodecs.given
 
