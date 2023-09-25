@@ -2,6 +2,5 @@ package objektwerks.actor
 
 import com.typesafe.config.ConfigFactory
 
-object Conf {
+object Conf:
   val config = ConfigFactory.load("test.conf")
-}
