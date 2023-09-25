@@ -10,11 +10,11 @@ import org.scalatest.wordspec.AnyWordSpecLike
 import scala.concurrent.duration.*
 import scala.language.postfixOps
 
-class Echo extends Actor:
+final class Echo extends Actor:
   def receive: Receive =
     case echo: String => sender() ! echo
 
-class ActorTest extends TestKit(ActorSystem("actor-test", Conf.config))
+final class ActorTest extends TestKit(ActorSystem("actor-test", Conf.config))
   with ImplicitSender
   with AnyWordSpecLike
   with Matchers
