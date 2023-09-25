@@ -15,7 +15,7 @@ import scala.concurrent.duration.*
 import scala.language.postfixOps
 import scala.concurrent.ExecutionContextExecutor
 
-class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
+final class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
   given system: ActorSystem = ActorSystem.create("streams", ConfigFactory.load("test.conf"))
   given dispatcher: ExecutionContextExecutor = system.dispatcher
 
@@ -23,29 +23,26 @@ class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
     Await.result(system.terminate(), 3 seconds)
     ()
 
-  test("source") {
+  test("source"):
     val source = Source(1 to 10)
     Await.result( source.runFold(0)(_ + _), 1 second ) shouldBe 55
     Await.result( source.runReduce(_ + _), 1 second ) shouldBe 55
-  }
 
-  test("source ~ sink") {
+  test("source ~ sink"):
     val source = Source(1 to 10)
     val sink = Sink.fold[Int, Int](0)(_ + _)
     Await.result( source.toMat(sink)(Keep.right).run(), 1 second ) shouldBe 55
     Await.result( source.runWith(sink), 1 second ) shouldBe 55
-  }
 
-  test("source ~ flow ~ sink") {
+  test("source ~ flow ~ sink"):
     val source = Source(1 to 10)
     val flow = Flow[Int].filter(_ % 2 == 0).map(_ * 2)
     val sink = Sink.fold[Int, Int](0)(_ + _)
     Await.result( source.via(flow).toMat(sink)(Keep.right).run(), 1 second ) shouldBe 60
     Await.result( source.via(flow).runWith(sink), 1 second ) shouldBe 60
     Await.result( flow.runWith(source, sink)._2, 1 second ) shouldBe 60
-  }
 
-  test("source graph") {
+  test("source graph"):
     val sourceGraph = Source.fromGraph(
       GraphDSL.create() { implicit builder =>
         import GraphDSL.Implicits._
@@ -63,9 +60,8 @@ class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
     )
     val sink = Sink.reduce[Int](_ + _)
     Await.result( sourceGraph.runWith(sink), 1 second ) shouldBe 110
-  }
 
-  test("flow graph") {
+  test("flow graph"):
     val flowGraph = Flow.fromGraph(
       GraphDSL.create() { implicit builder =>
         import GraphDSL.Implicits._
@@ -83,10 +79,9 @@ class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
     val source = Source(1 to 10)
     val sink = Sink.reduce[Int](_ + _)
     Await.result( source.via(flowGraph).toMat(sink)(Keep.right).run(), 1 second ) shouldBe 130
-  }
 
 /* See embedded comments!
-  test("graph") {
+  test("graph"):
     val source = Source(1 to 10)
     val incrementer = Flow[Int].map(_ + 1)
     val multiplier = Flow[Int].map(_ * 2)
@@ -108,9 +103,8 @@ class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
       }
     )
     Await.result( graph.run(), 1 second ) shouldEqual( (144,31) )
-  }
 
-  test("sink graph") {
+  test("sink graph"):
     val sink1 = Sink.reduce[Int](_ + _)
     val sink2 = Sink.reduce[Int](_ + _)
 
@@ -128,5 +122,4 @@ class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
     val source = Source(1 to 10)
     val futures = source.runWith(sinkGraph)
     Await.result( Future.sequence(List(futures._1, futures._2)), 1 second ).sum shouldBe 110
-  }
 */
