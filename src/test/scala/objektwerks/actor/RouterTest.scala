@@ -14,7 +14,7 @@ import scala.concurrent.Await
 import scala.concurrent.duration._
 import scala.language.postfixOps
 
-class Clock extends Actor with ActorLogging:
+final class Clock extends Actor with ActorLogging:
   val router = {
     val routees = Vector.fill(2) {
       ActorRefRoutee( context.actorOf(Props[Time]()) )
@@ -25,14 +25,14 @@ class Clock extends Actor with ActorLogging:
   def receive: Receive =
     case timeIs: String => router.route(timeIs, sender())
 
-class Time extends Actor with ActorLogging:
+final class Time extends Actor with ActorLogging:
   def receive: Receive =
     case timeIs: String =>
       val time = s"$timeIs ${LocalTime.now.toString}"
       log.info(s"*** $time")
       sender().tell(time, context.parent)
 
-class RouterTest extends AnyFunSuite with BeforeAndAfterAll:
+final class RouterTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("router", Conf.config)
   val clock = system.actorOf(Props[Clock](), name = "clock")
@@ -41,11 +41,10 @@ class RouterTest extends AnyFunSuite with BeforeAndAfterAll:
     Await.result(system.terminate(), 1 second)
     ()
 
-  test("router") {
+  test("router"):
     val whatTimeIsIt = (i: Int) => {
       val future = ask(clock, s"$i. The time is:").mapTo[String]
       val time = Await.result(future, 1 second)
       assert(time.nonEmpty)
     }
     for(i <- 1 to 3) whatTimeIsIt(i)
-  }
