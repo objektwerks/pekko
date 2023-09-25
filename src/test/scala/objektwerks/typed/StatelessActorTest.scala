@@ -26,7 +26,7 @@ object CountActor:
       Behaviors.same
   }
 
-class StatelessActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
+final class StatelessActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
   "CountActor behavior" should {
     "increment / decrement" in {
       val testProbe = createTestProbe[Count]("test-count")
