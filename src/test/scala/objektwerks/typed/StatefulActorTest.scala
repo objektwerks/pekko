@@ -29,7 +29,7 @@ object EmotionActor:
     }
   }
 
-class StatefulActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
+final class StatefulActorTest extends ScalaTestWithActorTestKit with AnyWordSpecLike:
   "EmotionActor behavior" should {
     "happy / sad" in {
       val testProbe = createTestProbe[Emotion]("test-emotion")
