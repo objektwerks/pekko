@@ -15,7 +15,7 @@ case object ToGrandParents
 case object ToParents
 case object ToChildren
 
-class GrandParents extends Actor with ActorLogging:
+final class GrandParents extends Actor with ActorLogging:
   import context.dispatcher
 
   log.info(s"*** GrandParents created: $self")
@@ -27,7 +27,7 @@ class GrandParents extends Actor with ActorLogging:
     case ToParents => parent ? ToParents pipeTo sender(); ()
     case ToChildren => parent ? ToChildren pipeTo sender(); ()
 
-class Parents extends Actor with ActorLogging:
+final class Parents extends Actor with ActorLogging:
   import context.dispatcher
 
   log.info(s"*** Parents created: $self")
@@ -38,14 +38,14 @@ class Parents extends Actor with ActorLogging:
     case ToParents => sender() ! "parents"
     case ToChildren => child ? ToChildren pipeTo sender(); ()
 
-class Children extends Actor with ActorLogging:
+final class Children extends Actor with ActorLogging:
   log.info(s"*** Children created: $self")
   given timeout: Timeout = Timeout(1 second)
 
   def receive: Receive =
     case ToChildren => sender() ! "children"
 
-class SelectionTest extends AnyFunSuite with BeforeAndAfterAll:
+final class SelectionTest extends AnyFunSuite with BeforeAndAfterAll:
   given timeout: Timeout = Timeout(1 second)
   val system = ActorSystem.create("selection", Conf.config)
   val grandparents = system.actorOf(Props[GrandParents](), name = "grandparents")
@@ -54,17 +54,14 @@ class SelectionTest extends AnyFunSuite with BeforeAndAfterAll:
     Await.result(system.terminate(), 1 second)
     ()
 
-  test("grand parents") {
+  test("grand parents"):
     assert("grandparents" == Await.result( (system.actorSelection("/user/grandparents") ? ToGrandParents).mapTo[String], 1 second))
     assert("parents" == Await.result( (system.actorSelection("/user/grandparents") ? ToParents).mapTo[String], 1 second))
     assert("children" == Await.result( (system.actorSelection("/user/grandparents") ? ToChildren).mapTo[String], 1 second))
-  }
 
-  test("parents") {
+  test("parents"):
     assert("parents" == Await.result( (system.actorSelection("/user/grandparents/parents") ? ToParents).mapTo[String], 1 second))
     assert("children" == Await.result( (system.actorSelection("/user/grandparents/*") ? ToChildren).mapTo[String], 1 second))
-  }
 
-  test("children") {
+  test("children"):
     assert("children" == Await.result( (system.actorSelection("/user/grandparents/parents/*") ? ToChildren).mapTo[String], 1 second))
-  }
