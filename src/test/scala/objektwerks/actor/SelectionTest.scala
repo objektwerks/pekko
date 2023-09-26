@@ -19,7 +19,7 @@ final class GrandParents extends Actor with ActorLogging:
   import context.dispatcher
 
   log.info(s"*** GrandParents created: $self")
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val parent = context.actorOf(Props[Parents](), name = "parents")
 
   def receive: Receive =
@@ -31,7 +31,7 @@ final class Parents extends Actor with ActorLogging:
   import context.dispatcher
 
   log.info(s"*** Parents created: $self")
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val child = context.actorOf(Props[Children](), name = "children")
 
   def receive: Receive =
@@ -40,13 +40,13 @@ final class Parents extends Actor with ActorLogging:
 
 final class Children extends Actor with ActorLogging:
   log.info(s"*** Children created: $self")
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
 
   def receive: Receive =
     case ToChildren => sender() ! "children"
 
 final class SelectionTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val system = ActorSystem.create("selection", Conf.config)
   val grandparents = system.actorOf(Props[GrandParents](), name = "grandparents")
 
