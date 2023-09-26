@@ -57,7 +57,7 @@ final class ComputeActor extends PersistentActor with ActorLogging:
     case RecoveryCompleted => log.info("*** Compute actor snapshot recovery completed.")
 
 final class PersistenceTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(20 seconds)
+  given Timeout = Timeout(20 seconds)
   val system = ActorSystem.create("persistence", Conf.config)
   val computeActor = system.actorOf(Props[ComputeActor](), name = "compute-actor")
   given dispatcher: ExecutionContext = system.dispatcher
