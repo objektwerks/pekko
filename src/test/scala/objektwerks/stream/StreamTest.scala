@@ -13,11 +13,11 @@ import org.scalatest.matchers.should.Matchers
 import scala.concurrent.Await
 import scala.concurrent.duration.*
 import scala.language.postfixOps
-import scala.concurrent.ExecutionContextExecutor
+import scala.concurrent.ExecutionContext
 
 final class StreamTest extends AnyFunSuite with BeforeAndAfterAll with Matchers:
   given system: ActorSystem = ActorSystem.create("streams", ConfigFactory.load("test.conf"))
-  given dispatcher: ExecutionContextExecutor = system.dispatcher
+  given ExecutionContext = system.dispatcher
 
   override protected def afterAll(): Unit =
     Await.result(system.terminate(), 3 seconds)
