@@ -36,7 +36,7 @@ final class Triathlete extends Actor with ActorLogging:
     log.info(s"*** Triathlete failed to handle message: $message.")
 
 final class BehaviorTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val system = ActorSystem.create("behavior", Conf.config)
   val triathlete = system.actorOf(Props[Triathlete](), name = "triathlete")
 
