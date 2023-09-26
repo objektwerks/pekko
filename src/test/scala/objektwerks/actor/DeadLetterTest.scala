@@ -18,7 +18,7 @@ final class Listener extends Actor with ActorLogging:
     case _: DeadLetter => log.info(s"*** Listener received dead letter!")
 
 final class DeadLetterTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val system = ActorSystem.create("deadletter", Conf.config)
   val service = system.actorOf(Props[Service](), name = "service")
   val listener = system.actorOf(Props[Listener](), name = "listener")
