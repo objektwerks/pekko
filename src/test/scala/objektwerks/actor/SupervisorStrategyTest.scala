@@ -22,9 +22,8 @@ final class Nanny extends Actor with ActorLogging:
   val child = context.actorOf(Props[Child](), name = "child")
 
   override def supervisorStrategy: SupervisorStrategy =
-    OneForOneStrategy(maxNrOfRetries = 1, withinTimeRange = 1 second) {
+    OneForOneStrategy(maxNrOfRetries = 1, withinTimeRange = 1 second):
       case _: CleanRoomException => Restart
-    }
 
   def receive: Receive =
     case task: Task => child ! task
