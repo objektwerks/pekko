@@ -19,16 +19,14 @@ final case class Event(state: State, data: Data)
 
 final class Pump extends Actor with FSM[State, Data]:
   startWith(Off, Data(0))
-  when(Off) {
+  when(Off):
     case Event(On, Data(flowRate)) => goto(On) using Data(flowRate)
-  }
-  when(On) {
+  when(On):
     case Event(Off, Data(flowRate)) => goto(Off) using Data(flowRate)
-  }
   initialize()
 
 final class FSMTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val system = ActorSystem.create("fsm", Conf.config)
   val pump = system.actorOf(Props[Pump](), name = "pump")
 
