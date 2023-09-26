@@ -18,7 +18,7 @@ case object CleanRoom extends Task
 final class CleanRoomException(cause: String) extends Exception(cause)
 
 final class Nanny extends Actor with ActorLogging:
-  given timeout: Timeout = Timeout(3 seconds)
+  given Timeout = Timeout(3 seconds)
   val child = context.actorOf(Props[Child](), name = "child")
 
   override def supervisorStrategy: SupervisorStrategy =
@@ -35,7 +35,7 @@ final class Child extends Actor with ActorLogging:
     case CleanRoom => throw new CleanRoomException("Child refuses to clean room!")
 
 final class SupervisorStrategyTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val system = ActorSystem.create("supervisor", Conf.config)
   val nanny = system.actorOf(Props[Nanny](), name = "nanny")
 
