@@ -20,7 +20,7 @@ final case class AskWorker(message: String) extends Message
 final class Master extends Actor with ActorLogging:
   import context.dispatcher
 
-  given timeout: Timeout = new Timeout(1 second)
+  given Timeout = new Timeout(1 second)
   val worker = context.actorOf(Props[Worker](), name = "worker")
 
   def receive: Receive =
@@ -47,7 +47,7 @@ final class Worker extends Actor with ActorLogging:
       sender() ! s"Worker responded to $message."
 
 final class TellAskTest extends AnyFunSuite with BeforeAndAfterAll:
-  given timeout: Timeout = Timeout(1 second)
+  given Timeout = Timeout(1 second)
   val system = ActorSystem.create("tellask", Conf.config)
   val master = system.actorOf(Props[Master](), name = "master")
 
