@@ -16,7 +16,7 @@ libraryDependencies ++= {
     "io.spray" %% "spray-json" % "1.3.6",
     "org.jfree" % "jfreechart" % "1.5.4",
     "com.formdev" % "flatlaf" % "3.1.1",
-    "ch.qos.logback" % "logback-classic" % "1.4.11",
+    "ch.qos.logback" % "logback-classic" % "1.4.13",
     "org.iq80.leveldb" % "leveldb" % "0.12" % Test,
     "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8" % Test,
     "org.apache.pekko" %% "pekko-actor-testkit-typed" % pekkoVersion % Test,
