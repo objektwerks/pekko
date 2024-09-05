@@ -2,7 +2,7 @@ name := "pekko"
 version := "1.0"
 scalaVersion := "3.5.1-RC2"
 libraryDependencies ++= {
-  val pekkoVersion = "1.0.3"
+  val pekkoVersion = "1.1.0"
   val pekkoHttpVersion = "1.0.1"
   Seq(
     "org.apache.pekko" %% "pekko-actor" % pekkoVersion,
