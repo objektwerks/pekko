@@ -1,6 +1,6 @@
 name := "pekko"
 version := "1.0"
-scalaVersion := "3.5.1-RC2"
+scalaVersion := "3.5.1"
 libraryDependencies ++= {
   val pekkoVersion = "1.1.0"
   val pekkoHttpVersion = "1.1.0-M1"
