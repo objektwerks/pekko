@@ -1,6 +1,6 @@
 Pekko
 -----
->Pekko feature tests using Swing and Scala 3.
+>Pekko feature tests using Swing, JFreeChart and Scala 3.
 
 Note
 ----
