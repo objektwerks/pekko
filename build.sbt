@@ -1,6 +1,6 @@
 name := "pekko"
 version := "1.0"
-scalaVersion := "3.9.0-RC5"
+scalaVersion := "3.9.0-RC6"
 libraryDependencies ++= {
   val pekkoVersion = "2.0.0-M1"
   Seq(
